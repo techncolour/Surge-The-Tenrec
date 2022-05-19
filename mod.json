@@ -1,0 +1,29 @@
+{
+	"Metadata":
+	{
+		"Name": "Surge the Tenrec",
+		"Author": "Hazel, Bluesteak, panoramhusky, rosy-eclairs",
+		"Description": "sonic spinball options music",
+		"URL": "",
+		"ModVersion": "0",
+	},
+	
+	"Settings":
+	{
+			"Group1":
+		[
+			{
+				"InternalName": "surge.palette",
+				"DisplayName": "Palette",
+				"Variable": "surge.palette",
+				"Category": "Palette options",
+				"DefaultValue": "0",
+				"Options":
+				{
+						"0x00": "Default",
+				}
+			}
+		],
+	}
+
+}
