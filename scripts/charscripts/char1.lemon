@@ -81,9 +81,9 @@ function bool Character.updateSuperPeelout()
 			return false
 		}
 
-		if (ring_counter >= 25) && !(char.bonus_effect & char.bonus.SHIELD_LIGHTNING) // Buy Lightning Shield
+		if (ring_counter >= 50) && !(char.bonus_effect & char.bonus.SHIELD_LIGHTNING) // Buy Lightning Shield
 		{
-			ring_counter -= 25
+			ring_counter -= 50
 			fn06122a() // Apply Lightning Shield
 		}
 
