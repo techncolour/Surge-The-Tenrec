@@ -55,12 +55,15 @@ function void SonicPressedJumpInMidAir()
 	if (XtraChar == 1)
 	{
 		char.double_jump_state = 2
-		char.velocity.x += (char.flags & char.flag.FACING_LEFT) ? -0x200 : 0x200
+		char.velocity.x += (char.flags & char.flag.FACING_LEFT) ? -0x250 : 0x250
 		char.velocity.y = -0x700
 		char.jumping = 0
+		playSound(SFX_INSTASHIELD)
 	}
-
-	base.SonicPressedJumpInMidAir()
+	else
+	{
+		base.SonicPressedJumpInMidAir()
+	}
 }
 
 //# address-hook(0x00ffd4) end(0x010214)
