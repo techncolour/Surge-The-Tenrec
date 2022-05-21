@@ -14,9 +14,9 @@ define u16 continueHUD.x = 20
 //# address-hook(0x010a94) end(0x010ae8)
 function void Character.BaseUpdate.Sonic()
 {
-	// Discord RPC
 	if (XtraChar == 1)
 	{
+		// Discord RPC
 		u64 Name = "Surge"
 		if (global.chaos_emeralds == 0 && global.super_emeralds == 0)
 			Game.setDiscordDetails(Name)
@@ -33,9 +33,34 @@ function void Character.BaseUpdate.Sonic()
 				Game.setDiscordDetails(stringformat("%s (All Super Emeralds)", Name))
 		}
 		Game.setDiscordSmallImage("character_unknown")
+
+		// Gravity & Hitbox
+		if (char.double_jump_state == 2)
+		{
+			char.velocity.y += 0x3f
+
+			D2.u16 = char.position.x.u16 - 0x24
+			D3.u16 = char.position.y.u16 - 0x24
+			D4.u16 = 0x42
+			D5.u16 = 0x42
+			Character.CheckCollisionsWithDynamicObjects_partial()
+		}
 	}
 
 	base.Character.BaseUpdate.Sonic()
+}
+
+function void SonicPressedJumpInMidAir()
+{
+	if (XtraChar == 1)
+	{
+		char.double_jump_state = 2
+		char.velocity.x += (char.flags & char.flag.FACING_LEFT) ? -0x200 : 0x200
+		char.velocity.y = -0x700
+		char.jumping = 0
+	}
+
+	base.SonicPressedJumpInMidAir()
 }
 
 function u64 Slot1MonitorKeys(u8 type)
