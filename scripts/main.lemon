@@ -2,13 +2,14 @@
 //I put all the stuff into one folder for some reason
 include charscripts/?
 
+global u8 surge.palette
 constant u8 CHARACTER_SURGE = 4
 
 function string getCharacterPaletteKey(u8 character)
 {
 	if (character == CHARACTER_SURGE)
 	{
-		if (Eyean.Palette == 0x00)
+		if (surge.palette == 0x00)
 			return "00_surge"
 		else //Failsafe
 			return "00_surge"
