@@ -160,7 +160,10 @@ function void Character.OnCollisionWithDynamicObject()
 					Surge.SpawnLinesEffect() // Newtrogic Panic moment
 
 					if (SurgeCombo >= 3)
+					{
 						Enemy.addScore(A1, 0x010216)
+						objA1.update_address = 0x01e5e0
+					}
 				}
 
 				char.velocity.x = -char.velocity.x
