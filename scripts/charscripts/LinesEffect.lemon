@@ -27,7 +27,7 @@ function void Surge.SpawnLinesEffect2(s16 life, s16 rotation)
 }
 
 //# address-hook(0x200069)
-function void LineEffect.Update()
+function void LineEffect.Update(s16 life, s16 rotation)
 {	
 	DrawObject()									// Draw the object (rendering done in the renderhook).
 	
