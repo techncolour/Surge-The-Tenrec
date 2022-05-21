@@ -11,8 +11,6 @@ function u64 getCharacterBonusTextIcon(u8 character)
 define u16 continueHUD.y = 185
 define u16 continueHUD.x = 20
 
-define u8 LightningDash = 0
-
 //# address-hook(0x010a94) end(0x010ae8)
 function void Character.BaseUpdate.Sonic()
 {
@@ -75,7 +73,7 @@ function void Character.OnCollisionWithDynamicObject()
 	if (XtraChar == 1)
 	{
 		bool attacking = false
-		if (char.double_jump_state == 2) || (char.groundspeed >= 0xa00)
+		if (char.double_jump_state == 2)
 			attacking = true
 	}
 
@@ -87,7 +85,7 @@ function void Character.GettingHurt()
 {
 	if (XtraChar == 1)
 	{
-		if (char.double_jump_state != 2) || (char.groundspeed <= 0xa00)
+		if (char.double_jump_state != 2)
 			base.Character.GettingHurt()
 		else	
 			fn0103ba()
