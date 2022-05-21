@@ -67,6 +67,34 @@ function void SonicPressedJumpInMidAir()
 	}
 }
 
+function bool Character.updateSuperPeelout()
+{
+	u8 input_state   = control.player1.state
+	u8 input_pressed = control.player1.pressed
+
+	if (XtraChar == 1)
+	{
+		bool canStartPeelout = (char.state == char.state.LOOKING_UP) && (input_pressed & CONTROL_ABC) && (player1.control_override == 0)	// Last check is needed in cutscenes (e.g. end of MHZ 2)
+		if (!canStartPeelout)
+		{
+			// Nothing to see here
+			return false
+		}
+
+		if (ring_counter >= 25) && !(char.bonus_effect & char.bonus.SHIELD_LIGHTNING) // Buy Lightning Shield
+		{
+			ring_counter -= 25
+			fn06122a() // Apply Lightning Shield
+		}
+
+		return true
+	}
+	else
+	{
+		return base.Character.updateSuperPeelout()
+	}
+}
+
 //# address-hook(0x00ffd4) end(0x010214)
 function void Character.OnCollisionWithDynamicObject()
 {
