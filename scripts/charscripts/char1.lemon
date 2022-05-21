@@ -159,7 +159,7 @@ function void Character.OnCollisionWithDynamicObject()
 					SurgeCombo++
 					Surge.SpawnLinesEffect() // Newtrogic Panic moment
 
-					if (SurgeCombo >= 3)
+					if (SurgeCombo >= 3) // Add score for high combo
 					{
 						Enemy.addScore(A1, 0x010216)
 						objA1.update_address = 0x01e5e0
