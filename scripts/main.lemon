@@ -9,9 +9,9 @@ function string getCharacterPaletteKey(u8 character)
 	if (character == CHARACTER_SURGE)
 	{
 		if (Eyean.Palette == 0x00)
-			return "00_surge"
+			return "surge_00"
 		else //Failsafe
-			return "00_surge"
+			return "surge_00"
 	}
 }
 
