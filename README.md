@@ -8,6 +8,6 @@ https://cdn.discordapp.com/attachments/685664482751545412/973803635261714462/Scr
 
 Passive Ability - Lightning Dash
 
-When running quickly, lightning sparks are created and you are able to damage enemies by ramming them. Think Strike Dash from Sonic Triple Trouble but only when you are running very fast (No Super Peel-Out). When entering water, you make it flash and destroy anything in it like entering water with a Lightning Shield. When you have a Lightning Shield, the move is stronger and can be used at normal running speeds.
+When running quickly, lightning sparks are created and you are able to damage enemies by ramming them. Think Strike Dash from Sonic Triple Trouble but only when you are running very fast (No Super Peel-Out). When underwater, you make it flash and destroy anything in it like entering water with a Lightning Shield. When you have a Lightning Shield, the move is stronger and can be used at normal running speeds.
 
 Surge cannot use Shield abilities.
