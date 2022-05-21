@@ -14,5 +14,3 @@ function string getCharacterPaletteKey(u8 character)
 
 	return base.getCharacterPaletteKey(character)
 }
-
-	
