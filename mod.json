@@ -21,6 +21,8 @@
 				"Options":
 				{
 						"0x00": "Default",
+						"0x01": "IDW???",
+						"0x02": "Bluesteak",
 				}
 			}
 		],
