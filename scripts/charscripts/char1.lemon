@@ -59,6 +59,7 @@ function void SonicPressedJumpInMidAir()
 		char.velocity.y = -0x800
 		char.jumping = 0
 		playSound(0xa0)
+		playSound(SFX_INSTASHIELD)
 	}
 	else
 	{
