@@ -1,0 +1,51 @@
+function bool Standalone.onWriteToSpriteTable(s16 px, s16 py, u16 renderQueue)
+{
+	u8 gameMode = global.game_mode & 0x7f
+	bool prioFlag = (objA0.sprite_attributes & 0x8000) != 0
+	u64 key
+	u64 paletteKey
+	u8 atex
+	u8 flags = ((objA0.render_flags & 0x01) ? SPRITE_FLAG_FLIP_X : 0) | ((objA0.render_flags & 0x02) ? SPRITE_FLAG_FLIP_Y : 0) | ((objA0.sprite_attributes & 0x8000) ? SPRITE_FLAG_PRIO : 0)
+	if (objA0.update_address == 0x00d30c || objA0.update_address == 0x00d42c)
+	{
+		if (objA0.animation.sprite == 5 && objA0.animation.timer == 1)
+		{
+			key = "dataSel_slot1"
+
+			if (Renderer.hasCustomSprite(key))
+				Renderer.drawCustomSprite(key, px - 0x0f, py-0x25, 0x00, SPRITE_FLAG_PRIO, 0xffff)
+		}
+	}
+	return base.Standalone.onWriteToSpriteTable(px, py, renderQueue)
+}
+
+//Palette selection for Mighty
+//SET THE PALETTE -- REGULAR GAME HAS ITS OWN ENTRY
+function string getCharacterPaletteKey(u8 character)
+{
+	if (XtraChar == 1 && character == CHARACTER_SONIC)
+	{
+		return "surge_00"
+	}
+    return base.getCharacterPaletteKey(character)
+}
+
+function bool Standalone.onDrawVdpSpriteCompound(s16 px, s16 py, u8 size, u16 index, u16 renderQueue, u8 spriteCounter)
+{
+    if (objA0.update_address == 0x00d30c || objA0.update_address == 0x00d42c)
+    {
+        if (index == 0xab0b || index == 0xab17)    //Sonic icon
+        {
+            if (objA0.animation.sprite == 5 && objA0.animation.timer == 1)
+            {
+                u64 key = "dataSel_slot1"
+                if (Renderer.hasCustomSprite(key))
+                {
+                    return true
+                }
+            }
+        }
+    }
+   
+    return base.Standalone.onDrawVdpSpriteCompound(px, py, size, index, renderQueue, spriteCounter)
+}

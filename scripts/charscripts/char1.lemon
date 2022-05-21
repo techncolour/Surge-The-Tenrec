@@ -8,6 +8,9 @@ function u64 getCharacterBonusTextIcon(u8 character)
 	return (XtraChar == 1) ? "" : base.getCharacterBonusTextIcon(character)
 }
 
+define u16 continueHUD.y = 185
+define u16 continueHUD.x = 20
+
 //# address-hook(0x010a94) end(0x010ae8)
 function void Character.BaseUpdate.Sonic()
 {
@@ -46,7 +49,7 @@ function u64 Slot1MonitorKeys(u8 type)
 	else if (type == 0x03)
 		return "monitor_icon_ring"
 	else if (type == 0x04)
-		return ((hud_type == 1) ? "monitor_mania_mighty_shoe" : "monitor_mighty_shoe")
+		return ("monitor_shoe")
 	else if (type == 0x05)
 		return "monitor_icon_fireshield"
 	else if (type == 0x06)
@@ -96,11 +99,11 @@ function bool XtraOneHUD()
 			// Continue hud mod
 			if (Renderer.hasCustomSprite("soniccont"))
 			{
-				u64 key = Continue_icons()
+				u64 key = "Continue_Icon"
 
 				if (Mods.isModActive("Continues HUD"))
 				{
-					Renderer.drawCustomSprite(key, baseX + continueHUD.x - ((Sprite_type == 0) ? 12 : 11), continueHUD.y + ((Sprite_type == 0) ? 11 : 13), 0, SPRITE_FLAG_PRIO, 0xe000, 0,255)
+					Renderer.drawCustomSprite(key, baseX + continueHUD.x - 11, continueHUD.y + 13, 0, SPRITE_FLAG_PRIO, 0xe000, 0,255)
 
 					if (continues_counter >= 10)
 					{
@@ -114,10 +117,10 @@ function bool XtraOneHUD()
 				{
 					u16 continuetick = 0
 					u16 continuemove = 0
-					u16 continuemove.y = ((Sprite_type == 0) ? -11 : -13)
+					u16 continuemove.y = -13
 					while (continuetick < continues_counter)
 					{
-						Renderer.drawCustomSprite(key, baseX + continueHUD.x - ((Sprite_type == 0) ? 12 : 11) + continuemove, max(continueHUD.y - continuemove.y, 0), 0, SPRITE_FLAG_PRIO, 0xe000, 0,255)
+						Renderer.drawCustomSprite(key, baseX + continueHUD.x - 11 + continuemove, max(continueHUD.y - continuemove.y, 0), 0, SPRITE_FLAG_PRIO, 0xe000, 0,255)
 						continuemove += 21
 						++continuetick
 						if (continuemove > 370)
