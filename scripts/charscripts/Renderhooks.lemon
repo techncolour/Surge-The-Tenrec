@@ -16,7 +16,8 @@ function bool Standalone.onWriteToSpriteTable(s16 px, s16 py, u16 renderQueue)
 				Renderer.drawCustomSprite(key, px - 0x0f, py-0x25, 0x00, SPRITE_FLAG_PRIO, 0xffff)
 		}
 	}
-	return base.Standalone.onWriteToSpriteTable(s16 px, s16 py, u16 renderQueue)
+	return base.Standalone.onWriteToSpriteTable(px, py, renderQueue)
+}
 //Palette selectiglobal u8 surge.palette
 //Palette selection for Mighty
 //SET THE PALETTE -- REGULAR GAME HAS ITS OWN ENTRY
