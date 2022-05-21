@@ -9,10 +9,7 @@ function string getCharacterPaletteKey(u8 character)
 {
 	if (character == CHARACTER_SURGE)
 	{
-		if (surge.palette == 0x00)
-			return "00_surge"
-		else //Failsafe
-			return "00_surge"
+		return "surge_0x" + surge.palette
 	}
 }
 
