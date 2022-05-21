@@ -9,8 +9,10 @@ function string getCharacterPaletteKey(u8 character)
 {
 	if (character == CHARACTER_SURGE)
 	{
-		return "surge_0x" + surge.palette
+		return "surge_" + surge.palette
 	}
+
+	return base.getCharacterPaletteKey(character)
 }
 
 	
