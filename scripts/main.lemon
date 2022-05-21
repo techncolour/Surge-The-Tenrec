@@ -1,3 +1,18 @@
 //This is an example of a multi-char mod
 //I put all the stuff into one folder for some reason
 include charscripts/?
+
+constant u8 CHARACTER_SURGE = 4
+
+function string getCharacterPaletteKey(u8 character)
+{
+	if (character == CHARACTER_SURGE)
+	{
+		if (Eyean.Palette == 0x00)
+			return "00_surge"
+		else //Failsafe
+			return "00_surge"
+	}
+}
+
+	
