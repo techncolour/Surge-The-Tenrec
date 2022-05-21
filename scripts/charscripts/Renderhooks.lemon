@@ -16,16 +16,15 @@ function bool Standalone.onWriteToSpriteTable(s16 px, s16 py, u16 renderQueue)
 				Renderer.drawCustomSprite(key, px - 0x0f, py-0x25, 0x00, SPRITE_FLAG_PRIO, 0xffff)
 		}
 	}
-	return base.Standalone.onWriteToSpriteTable(px, py, renderQueue)
-}
-
+	return base.Standalone.onWriteToSpriteTable(px, p
+//Palette selectiglobal u8 surge.palette
 //Palette selection for Mighty
 //SET THE PALETTE -- REGULAR GAME HAS ITS OWN ENTRY
 function string getCharacterPaletteKey(u8 character)
 {
 	if (XtraChar == 1 && character == CHARACTER_SONIC)
 	{
-		return "surge_00"
+		return (surge.palette == 0) ? "surge_00" : (surge.palette == 1) ? "surge_01" : "surge_02"
 	}
     return base.getCharacterPaletteKey(character)
 }
