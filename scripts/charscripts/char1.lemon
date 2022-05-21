@@ -34,7 +34,7 @@ function void Character.BaseUpdate.Sonic()
 		}
 		Game.setDiscordSmallImage("character_unknown")
 
-		// Gravity & Hitbox
+		// Gravity & Hitbox (Surge Ability)
 		if (char.double_jump_state == 2)
 		{
 			char.velocity.y += 0x3f
@@ -52,7 +52,7 @@ function void Character.BaseUpdate.Sonic()
 
 function void SonicPressedJumpInMidAir()
 {
-	if (XtraChar == 1)
+	if (XtraChar == 1) // Surge Ability
 	{
 		char.double_jump_state = 2
 		char.velocity.x += (char.flags & char.flag.FACING_LEFT) ? -0x250 : 0x250
@@ -101,7 +101,7 @@ function void Character.OnCollisionWithDynamicObject()
 	if (XtraChar == 1)
 	{
 		bool attacking = false
-		if (char.double_jump_state == 2)
+		if (char.double_jump_state == 2) // Set attack priority
 			attacking = true
 	}
 
@@ -113,7 +113,7 @@ function void Character.GettingHurt()
 {
 	if (XtraChar == 1)
 	{
-		if (char.double_jump_state != 2)
+		if (char.double_jump_state != 2) // Set invincibility
 			base.Character.GettingHurt()
 		else	
 			fn0103ba()
