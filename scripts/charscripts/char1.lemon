@@ -63,6 +63,33 @@ function void SonicPressedJumpInMidAir()
 	base.SonicPressedJumpInMidAir()
 }
 
+//# address-hook(0x00ffd4) end(0x010214)
+function void Character.OnCollisionWithDynamicObject()
+{
+	if (XtraChar == 1)
+	{
+		bool attacking = false
+		if (char.double_jump_state == 2)
+			attacking = true
+	}
+
+	base.Character.OnCollisionWithDynamicObject()
+}
+
+//# address-hook(0x010294) end(0x010364)
+function void Character.GettingHurt()
+{
+	if (XtraChar == 1)
+	{
+		if (char.double_jump_state != 2)
+			base.Character.GettingHurt()
+	}
+	else
+	{
+	base.Character.GettingHurt()
+	}
+}
+
 function u64 Slot1MonitorKeys(u8 type)
 {
 	if (type == 0)
