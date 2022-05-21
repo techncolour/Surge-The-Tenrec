@@ -11,6 +11,8 @@ function u64 getCharacterBonusTextIcon(u8 character)
 define u16 continueHUD.y = 185
 define u16 continueHUD.x = 20
 
+global u8 SurgeCombo = 0 // idk what else to do here so its a global, sorry (please fix later)
+
 //# address-hook(0x010a94) end(0x010ae8)
 function void Character.BaseUpdate.Sonic()
 {
@@ -44,6 +46,10 @@ function void Character.BaseUpdate.Sonic()
 			D4.u16 = 0x42
 			D5.u16 = 0x42
 			Character.CheckCollisionsWithDynamicObjects_partial()
+		}
+		else
+		{
+			SurgeCombo = 0
 		}
 	}
 
@@ -100,9 +106,219 @@ function void Character.OnCollisionWithDynamicObject()
 {
 	if (XtraChar == 1)
 	{
-		bool attacking = false
-		if (char.double_jump_state == 2) // Set attack priority
-			attacking = true
+		D1.u8 = u8[A1 + 0x28] & 0xc0
+		if (D1.u8 == 0)
+		{
+			// Collision is an enemy, i.e. is harmful, but can be attacked
+			bool attacking = false
+			if (char.bonus_effect & char.bonus.INVINCIBLE) || (char.double_jump_state == 2)
+			{
+				attacking = true
+			}
+			else if (char.state == char.state.ROLLING || char.state == char.state.SPINDASH)
+			{
+				attacking = true
+			}
+		#if STANDALONE
+			else if (Game.getSetting(SETTING_DROPDASH) && char.character == CHARACTER_SONIC && char.state == char.state.SONIC_DROPDASH)
+			{
+				attacking = true
+			}
+		#endif
+
+			if (!attacking)
+			{
+				bool isThreat = false
+				if (char.character == CHARACTER_KNUCKLES)
+				{
+					isThreat = (char.double_jump_state != 1 && char.double_jump_state != 3)
+				}
+				else if (char.character == CHARACTER_SONIC || char.double_jump_state == 0 || (char.flags & char.flag.UNDERWATER))
+				{
+					isThreat = true
+				}
+				else
+				{
+					s16 dx = char.position.x.u16 - objA1.position.x.u16
+					s16 dy = char.position.y.u16 - objA1.position.y.u16
+					D0.u8 = lookupAngleByVector(dx, dy) - 0x20
+					isThreat = (D0.u8 >= 0x40)
+				}
+
+				if (isThreat)
+				{
+					Character.OnThreatCollision()
+					return
+				}
+			}
+
+			if (u8[A1 + 0x29] != 0)
+			{
+				char.velocity.x = -char.velocity.x
+				char.velocity.y = -char.velocity.y
+				char.groundspeed = -char.groundspeed
+				u8[A1 + 0x1c] = A0.u8
+				u8[A1 + 0x25] = u8[A1 + 0x28]
+				u8[A1 + 0x28] = 0
+				--u8[A1 + 0x29]
+				if (u8[A1 + 0x29] == 0)
+				{
+					u8[A1 + 0x2a] |= 0x80
+				}
+
+				if (char.double_jump_state == 2)
+				{
+					SurgeCombo++
+					Surge.SpawnLinesEffect() // Newtrogic Panic moment
+
+					if (SurgeCombo >= 3)
+						Enemy.addScore(A1, 0x010216)
+				}
+			}
+			else
+			{
+				if (u8[A1 + 0x2a] & 0x04)
+				{
+					A2 = 0xffff0000 + u16[A1 + 0x3c]
+					u8[A2] &= ~(1 << u8[A1 + 0x3b])
+				}
+
+				u8[A1 + 0x2a] |= 0x80
+
+				// Grant bonus points
+				Enemy.addScore(A1, 0x010216)
+
+				objA1.update_address = 0x01e5e0
+				u8[A1 + 0x05] = 0
+				if (char.velocity.y < 0)
+				{
+					char.velocity.y += 0x100
+				}
+				else if (char.position.y.u16 >= objA1.position.y.u16)
+				{
+					char.velocity.y -= 0x100
+				}
+				else
+				{
+					char.velocity.y = -char.velocity.y
+				}
+			}
+		}
+		else if (D1.u8 == 0x40)
+		{
+			D0.u8 = u8[A1 + 0x28] & 0x3f
+			if (D0.u8 != 0x06)
+			{
+				// Collect ring, but only after 30 invulnerability frames
+				//  -> Remember that the "char.invuln.countdown" timer starts at 120
+				u8 timer = competition_mode.active ? char.invuln.countdown : u8[0xffffb034]
+				if (timer < 90)
+				{
+					u8[A1 + 0x05] = 0x04
+				}
+			}
+			else
+			{
+				// This part seems to be for monitors specifically
+				s16 vy = (global.inv_gravity) ? -char.velocity.y : char.velocity.y
+				bool movingUp = (objA1.render_flags & render_flag.FLIP_Y) ? (vy > 0) : (vy < 0)
+				if (movingUp)
+				{
+					if (u8[A1 + 0x2a] & char.flag.IN_AIR)
+					{
+						if ((objA1.render_flags & render_flag.FLIP_Y) == 0)
+						{
+							if (char.position.y.u16 - 0x10 < objA1.position.y.u16)
+								return
+						}
+						else
+						{
+							if (char.position.y.u16 + 0x10 >= objA1.position.y.u16)
+								return
+						}
+
+						char.velocity.y = -char.velocity.y
+						objA1.velocity.y = -0x180
+						if (u8[A1 + 0x3c] == 0)
+							u8[A1 + 0x3c] = 4
+
+						return
+					}
+					else
+					{
+					#if STANDALONE
+						// In S3AIR, do not allow S&K's monitor opening from the side
+						//  -> This is done to be more consistent with other Sonic games, incl. Sonic 1, 2, CD, Mania and even Sonic 3 alone
+						//  -> The first check above tells us if the character is on a side of the monitor
+						//  -> The second one makes sure that you can always ground-based roll into a monitor (see e.g. first invincibility in MHZ 1, when spindashing into it from the right)
+						if ((u8[A1 + 0x2a] & char.flag.PUSHING) && (char.flags & char.flag.IN_AIR))
+						{
+							return
+						}
+						// TODO: Unfinished code here -- it works, but the falling monitor can crush the player, and is this really what we want?
+					/*
+						else
+						{
+							// Hit monitor from below, make it fall
+							u8[A1 + 0x3c] = 1
+
+							char.velocity.y = -char.velocity.y
+							objA1.velocity.y = -0x180
+							if (u8[A1 + 0x3c] == 0)
+								u8[A1 + 0x3c] = 4
+							return
+						}
+					*/
+					#endif
+					}
+				}
+
+				if (A0 != 0xffffb000 && competition_mode.active == 0)
+				{
+					// Sorry player 2, you can't open monitors in normal game
+					return
+				}
+
+				bool canOpenMonitor = false
+				if (char.state == char.state.ROLLING)
+				{
+					canOpenMonitor = true
+				}
+			#if STANDALONE
+				else if (Game.getSetting(SETTING_DROPDASH) && char.character == CHARACTER_SONIC && char.state == char.state.SONIC_DROPDASH)
+				{
+					canOpenMonitor = true
+				}
+			#endif
+				else if (char.character == CHARACTER_KNUCKLES)
+				{
+					canOpenMonitor = (char.double_jump_state == 1 || char.double_jump_state == 3)
+				}
+
+				if (canOpenMonitor)
+				{
+				#if STANDALONE
+					if (!movingUp)
+				#endif
+					{
+						// Bounce off
+						char.velocity.y = -char.velocity.y
+					}
+					u8[A1 + 0x05] = 4
+					u16[A1 + 0x42] = A0.u16
+				}
+			}
+		}
+		else if (D1.u8 == 0x80)
+		{
+			// Harmful object
+			Character.OnThreatCollision()
+		}
+		else  // D1.u8 == 0xc0
+		{
+			// Other interactable object
+			fn0103ba()
+		}
 	}
 
 	base.Character.OnCollisionWithDynamicObject()
