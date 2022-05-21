@@ -56,7 +56,7 @@ function void SonicPressedJumpInMidAir()
 	{
 		char.double_jump_state = 2
 		char.velocity.x += (char.flags & char.flag.FACING_LEFT) ? -0x250 : 0x250
-		char.velocity.y = -0x700
+		char.velocity.y = -0x800
 		char.jumping = 0
 		playSound(SFX_INSTASHIELD)
 	}
