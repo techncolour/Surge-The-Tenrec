@@ -154,6 +154,15 @@ function void Character.OnCollisionWithDynamicObject()
 
 			if (u8[A1 + 0x29] != 0)
 			{
+				if (char.double_jump_state == 2) // Combo Counter
+				{
+					SurgeCombo++
+					Surge.SpawnLinesEffect() // Newtrogic Panic moment
+
+					if (SurgeCombo >= 3)
+						Enemy.addScore(A1, 0x010216)
+				}
+
 				char.velocity.x = -char.velocity.x
 				char.velocity.y = -char.velocity.y
 				char.groundspeed = -char.groundspeed
@@ -164,15 +173,6 @@ function void Character.OnCollisionWithDynamicObject()
 				if (u8[A1 + 0x29] == 0)
 				{
 					u8[A1 + 0x2a] |= 0x80
-				}
-
-				if (char.double_jump_state == 2)
-				{
-					SurgeCombo++
-					Surge.SpawnLinesEffect() // Newtrogic Panic moment
-
-					if (SurgeCombo >= 3)
-						Enemy.addScore(A1, 0x010216)
 				}
 			}
 			else
