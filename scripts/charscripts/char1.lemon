@@ -339,7 +339,7 @@ function void Character.GettingHurt()
 	}
 	else
 	{
-	base.Character.GettingHurt()
+		base.Character.GettingHurt()
 	}
 }
 
