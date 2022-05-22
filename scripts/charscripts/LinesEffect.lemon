@@ -22,7 +22,7 @@ function void Surge.SpawnLinesEffect2(s16 life, s16 rotation)
 		objA1.position.x.u16 = objA0.position.x.u16						// Same position as the object we spawn from (the monitor).
 		objA1.position.y.u16 = objA0.position.y.u16
 
-		LineEffect.Update(life, rotation)
+		LineEffect.Update()
 	}
 }
 
