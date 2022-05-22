@@ -1,0 +1,5 @@
+{
+	"NPLine":  { "File": "HitEffect.png", "Rect": "5,2,10,5"},
+	"SpeedrunBonus":  { "File": "SpeedrunBonus.png", "Rect": "42,7,84,14"},
+	"NoHitBonus":  { "File": "NoHitBonus.png", "Rect": "34,7,69,14"},
+}
