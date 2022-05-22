@@ -154,17 +154,7 @@ function void Character.OnCollisionWithDynamicObject()
 
 			if (u8[A1 + 0x29] != 0)
 			{
-				if (char.double_jump_state == 2) // Combo Counter
-				{
-					SurgeCombo++
-					Surge.SpawnLinesEffect() // Newtrogic Panic moment
-
-					if (SurgeCombo >= 3) // Add score for high combo
-					{
-						Enemy.addScore(A1, 0x010216)
-						objA1.update_address = 0x01e5e0
-					}
-				}
+				SurgeComboCheck()
 
 				char.velocity.x = -char.velocity.x
 				char.velocity.y = -char.velocity.y
@@ -180,6 +170,8 @@ function void Character.OnCollisionWithDynamicObject()
 			}
 			else
 			{
+				SurgeComboCheck()
+
 				if (u8[A1 + 0x2a] & 0x04)
 				{
 					A2 = 0xffff0000 + u16[A1 + 0x3c]
@@ -239,6 +231,8 @@ function void Character.OnCollisionWithDynamicObject()
 							if (char.position.y.u16 + 0x10 >= objA1.position.y.u16)
 								return
 						}
+
+						SurgeComboCheck()
 
 						char.velocity.y = -char.velocity.y
 						objA1.velocity.y = -0x180
@@ -306,6 +300,7 @@ function void Character.OnCollisionWithDynamicObject()
 					{
 						// Bounce off
 						char.velocity.y = -char.velocity.y
+						SurgeComboCheck()
 					}
 					u8[A1 + 0x05] = 4
 					u16[A1 + 0x42] = A0.u16
@@ -330,6 +325,23 @@ function void Character.OnCollisionWithDynamicObject()
 	}
 
 	// base.Character.OnCollisionWithDynamicObject()
+}
+
+function void SurgeComboCheck()
+{
+	if (char.double_jump_state == 2) // Combo Counter
+	{
+		SurgeCombo++
+		Surge.SpawnLinesEffect() // Newtrogic Panic moment
+
+		camera.screenshake.state = 0x14
+		camera.hyper_knux_shake = 0x14
+
+		if (SurgeCombo >= 3) // Add score for high combo
+		{
+			Enemy.addScore(A1, 0x010216)
+		}
+	}
 }
 
 //# address-hook(0x010294) end(0x010364)
