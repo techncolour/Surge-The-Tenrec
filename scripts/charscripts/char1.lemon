@@ -372,7 +372,7 @@ function u64 Slot1MonitorKeys(u8 type)
 	if (type == 0)
 		return "monitor_icon_static"
 	else if (type == 0x01)
-		return "monitor_Surge"
+		return "monitor_icon_surge"
 	else if (type == 0x02)
 		return "monitor_icon_robotnik"
 	else if (type == 0x03)
