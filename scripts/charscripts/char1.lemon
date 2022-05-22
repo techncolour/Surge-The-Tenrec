@@ -237,7 +237,7 @@ function void Character.OnCollisionWithDynamicObject()
 						objA1.velocity.y = -0x180
 
 						SurgeComboCheck()
-						
+
 						if (u8[A1 + 0x3c] == 0)
 							u8[A1 + 0x3c] = 4
 
@@ -344,7 +344,8 @@ function void SurgeComboCheck()
 			Enemy.addScore(A1, 0x010216)
 		}
 
-		// Do this twice for hitlag, idk why it works but it does
+		// Do this thrice for hitlag, idk why it works but it does
+		yieldExecution()
 		yieldExecution()
 		yieldExecution()
 	}
