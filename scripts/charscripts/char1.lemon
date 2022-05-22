@@ -171,7 +171,6 @@ function void Character.OnCollisionWithDynamicObject()
 			}
 			else
 			{
-				SurgeComboCheck()
 
 				if (u8[A1 + 0x2a] & 0x04)
 				{
@@ -198,6 +197,8 @@ function void Character.OnCollisionWithDynamicObject()
 				{
 					char.velocity.y = -char.velocity.y
 				}
+
+				SurgeComboCheck()
 			}
 		}
 		else if (D1.u8 == 0x40)
