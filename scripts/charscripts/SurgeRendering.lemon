@@ -81,41 +81,41 @@ function bool SurgeCustomRendering(u8 character, u8 variant, s16 px, s16 py, boo
 		}
 
 		//Fake Genesis rotation
-		if (!Game.getSetting(SETTING_SMOOTH_ROTATION))
-		{
-			//WALK
-			if (animationSprite >= 0x01 && animationSprite <= 0x20)
-			{
-				angle = (animationSprite - 0x01) / 8 * 0xe0
-				if (char.flags & char.flag.FACING_LEFT)
-					angle = -angle
-				animationSprite = 0x01 + (animationSprite - 0x01) % 8
-			}
-			//RUN
-			else if (animationSprite >= 0x21 && animationSprite <= 0x30)
-			{
-				angle = (animationSprite - 0x21) / 4 * 0xe0
-				if (char.flags & char.flag.FACING_LEFT)
-					angle = -angle
-				animationSprite = 0x21 + (animationSprite - 0x21) % 4
-			}
-			//Hanging in AIZ
-			else if (animationSprite >= 0x78 && animationSprite <= 0x7f)
-			{
-				angle = (animationSprite - 0x78) * 0xe0
-				if (char.flags & char.flag.FACING_LEFT)
-					angle = -angle
-				animationSprite = 0x78
-			}
-			//Hanging in MHZ
-			else if (animationSprite >= 0xeb && animationSprite <= 0xee)
-			{
-				angle = (animationSprite - 0xeb) * 0xe0
-				if (char.flags & char.flag.FACING_LEFT)
-					angle = -angle
-				animationSprite = 0xeb
-			}
-		}
+		// if (!Game.getSetting(SETTING_SMOOTH_ROTATION))
+		// {
+		// 	//WALK
+		// 	if (animationSprite >= 0x01 && animationSprite <= 0x20)
+		// 	{
+		// 		angle = (animationSprite - 0x01) / 8 * 0xe0
+		// 		if (char.flags & char.flag.FACING_LEFT)
+		// 			angle = -angle
+		// 		animationSprite = 0x01 + (animationSprite - 0x01) % 8
+		// 	}
+		// 	//RUN
+		// 	else if (animationSprite >= 0x21 && animationSprite <= 0x30)
+		// 	{
+		// 		angle = (animationSprite - 0x21) / 4 * 0xe0
+		// 		if (char.flags & char.flag.FACING_LEFT)
+		// 			angle = -angle
+		// 		animationSprite = 0x21 + (animationSprite - 0x21) % 4
+		// 	}
+		// 	//Hanging in AIZ
+		// 	else if (animationSprite >= 0x78 && animationSprite <= 0x7f)
+		// 	{
+		// 		angle = (animationSprite - 0x78) * 0xe0
+		// 		if (char.flags & char.flag.FACING_LEFT)
+		// 			angle = -angle
+		// 		animationSprite = 0x78
+		// 	}
+		// 	//Hanging in MHZ
+		// 	else if (animationSprite >= 0xeb && animationSprite <= 0xee)
+		// 	{
+		// 		angle = (animationSprite - 0xeb) * 0xe0
+		// 		if (char.flags & char.flag.FACING_LEFT)
+		// 			angle = -angle
+		// 		animationSprite = 0xeb
+		// 	}
+		// }
 
 		if (animationSpriteEx >= 0x100)
 		{
