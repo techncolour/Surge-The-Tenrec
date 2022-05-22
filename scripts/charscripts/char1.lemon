@@ -111,7 +111,7 @@ function void Character.OnCollisionWithDynamicObject()
 		{
 			// Collision is an enemy, i.e. is harmful, but can be attacked
 			bool attacking = false
-			if (char.bonus_effect & char.bonus.INVINCIBLE) || (char.double_jump_state == 2)
+			if (char.bonus_effect & char.bonus.INVINCIBLE))
 			{
 				attacking = true
 			}
