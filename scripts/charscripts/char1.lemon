@@ -111,7 +111,7 @@ function void Character.OnCollisionWithDynamicObject()
 		{
 			// Collision is an enemy, i.e. is harmful, but can be attacked
 			bool attacking = false
-			if (char.bonus_effect & char.bonus.INVINCIBLE)
+			if (char.bonus_effect & char.bonus.INVINCIBLE) || (char.double_jump_state == 2)
 			{
 				attacking = true
 			}
@@ -154,17 +154,17 @@ function void Character.OnCollisionWithDynamicObject()
 
 			if (u8[A1 + 0x29] != 0)
 			{
-				// if (char.double_jump_state == 2) // Combo Counter
-				// {
-				// 	SurgeCombo++
-				// 	Surge.SpawnLinesEffect() // Newtrogic Panic moment
+				if (char.double_jump_state == 2) // Combo Counter
+				{
+					SurgeCombo++
+					Surge.SpawnLinesEffect() // Newtrogic Panic moment
 
-				// 	if (SurgeCombo >= 3) // Add score for high combo
-				// 	{
-				// 		Enemy.addScore(A1, 0x010216)
-				// 		objA1.update_address = 0x01e5e0
-				// 	}
-				// }
+					if (SurgeCombo >= 3) // Add score for high combo
+					{
+						Enemy.addScore(A1, 0x010216)
+						objA1.update_address = 0x01e5e0
+					}
+				}
 
 				char.velocity.x = -char.velocity.x
 				char.velocity.y = -char.velocity.y
@@ -323,8 +323,13 @@ function void Character.OnCollisionWithDynamicObject()
 			fn0103ba()
 		}
 	}
+	else
+	{
+		base.Character.OnCollisionWithDynamicObject()
+		return
+	}
 
-	base.Character.OnCollisionWithDynamicObject()
+	// base.Character.OnCollisionWithDynamicObject()
 }
 
 //# address-hook(0x010294) end(0x010364)
