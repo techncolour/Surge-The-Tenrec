@@ -40,7 +40,7 @@
 function bool Standalone.onWriteToSpriteTable(s16 px, s16 py, u16 renderQueue)
 {	
 	s16 rotation
-	if (objA0.update_address == 0x2004B1 || objA0.update_address == 0x2004B3)															// It's our object.
+	if (objA0.update_address == 0x2004C2 || objA0.update_address == 0x2004C4)															// It's our object.
 	{
 		u64 key = stringformat("hud_lives_icon_Surge", objA0.animation.sprite)								// Set the sprite using the random value from the setup function.
 		
@@ -72,7 +72,7 @@ function void Surge.SpawnLinesEffect()
 			if (global.inv_gravity)
 			{
 				u8[A1 + 0x04] = (render_flag.WORLD)
-				objA1.update_address = 0x2004B3
+				objA1.update_address = 0x2004C4
 				//u16[A1 + 0x0a] = 0xa6bc
 				//u32[A1 + 0x0c] = 0x01a99a
 				objA1.position.y = objA0.position.y
@@ -82,10 +82,10 @@ function void Surge.SpawnLinesEffect()
 				
 				objA1.position.y.u16 -= 0xf
 
-				if (char.flags & char.flag.FACING_LEFT)
-					objA1.position.x.u16 += 8
-				else
-					objA1.position.x.u16 -= 8
+				// if (char.flags & char.flag.FACING_LEFT)
+				// 	objA1.position.x.u16 += 8
+				// else
+				// 	objA1.position.x.u16 -= 8
 				
 				objA1.velocity.x = dust_speed
 				
@@ -97,7 +97,7 @@ function void Surge.SpawnLinesEffect()
 			else
 			{
 				u8[A1 + 0x04] = (render_flag.WORLD)
-				objA1.update_address = 0x2004B1
+				objA1.update_address = 0x2004C2
 				//u16[A1 + 0x0a] = 0xa6bc
 				//u32[A1 + 0x0c] = 0x01a99a
 				objA1.position.y = objA0.position.y
@@ -107,10 +107,10 @@ function void Surge.SpawnLinesEffect()
 				
 				objA1.position.y.u16 += 0xf
 
-				if (char.flags & char.flag.FACING_LEFT)
-					objA1.position.x.u16 += 8
-				else
-					objA1.position.x.u16 -= 8
+				// if (char.flags & char.flag.FACING_LEFT)
+				// 	objA1.position.x.u16 += 8
+				// else
+				// 	objA1.position.x.u16 -= 8
 				
 				objA1.velocity.x = dust_speed
 				
@@ -139,7 +139,7 @@ function void Surge.SpawnLinesEffect()
 	A1 = A1backup
 }
 
-//# address-hook(0x2004B1)
+//# address-hook(0x2004C2)
 function void Character.UpdateSpawnLinesEffect()
 {
 	if (objA0.state > 79)
@@ -152,7 +152,7 @@ function void Character.UpdateSpawnLinesEffect()
 	
 	if (objA0.flags2a)
 	{
-		if !(u16[0xffffb000 + 0x46] & 2)	// What path is Mighty on?
+		if !(u16[0xffffb000 + 0x46] & 2)
 		{
 			D5 = 0x0c
 			checkStaticCollisionVertical(objA0.position.x.u16, objA0.position.y.u16, 0xfffff768, 0x10, 0)
@@ -175,7 +175,7 @@ function void Character.UpdateSpawnLinesEffect()
 	DrawObject()
 }
 
-//# address-hook(0x2004B3)
+//# address-hook(0x2004C4)
 function void Character.UpdateSpawnLinesEffectInverted()
 {
 	if (objA0.state > 79)
