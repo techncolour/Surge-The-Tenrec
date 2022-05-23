@@ -223,7 +223,10 @@ function bool SurgeCustomRendering(u8 character, u8 variant, s16 px, s16 py, boo
 				py0 &= level.height.bitmask
 
 			Renderer.setSpriteTagWithPosition(characterAddress + 0x10 + i, px0, py0)
-			Renderer.drawCustomSprite(key, px0, py0, atex, flags, renderQueue - i, angle, 192 - i * 32)
+			if (char.double_jump_state == 2)
+				Renderer.drawCustomSprite(key, px0, py0, atex, flags, renderQueue - i, kickrotate, 192 - i * 32)
+			else
+				Renderer.drawCustomSprite(key, px0, py0, atex, flags, renderQueue - i, angle, 192 - i * 32)
 		}
 	}
 
