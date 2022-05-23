@@ -379,7 +379,7 @@ function u64 Slot1MonitorKeys(u8 type)
 	else if (type == 0x03)
 		return "monitor_icon_ring"
 	else if (type == 0x04)
-		return ("monitor_shoe")
+		return ("monitor_surge_shoe")
 	else if (type == 0x05)
 		return "monitor_icon_fireshield"
 	else if (type == 0x06)

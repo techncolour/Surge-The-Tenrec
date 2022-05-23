@@ -1,4 +1,5 @@
 {
 	"surge_text":  { "File": "nameplate.png", "Rect": "0,0,73,16"},
-	"monitor_icon_surge":  { "File": "monitor.png", "Rect": "0,0,16,16", "Center": "8,8" }
+	"monitor_icon_surge":  { "File": "monitor.png", "Rect": "0,0,16,16", "Center": "8,8" },
+	"monitor_surge_shoe":  { "File": "surgeshoe.png", "Rect": "0,0,16,16", "Center": "8,8" }
 }
