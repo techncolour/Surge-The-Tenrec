@@ -1,0 +1,4 @@
+{
+	"surgekick_0x01":  { "File": "surgecool.bmp", "Rect": "0,0,64,64", "Center": "20,20" },
+	"surgekick_0x02":  { "File": "surgecool.bmp", "Rect": "65,0,64,64", "Center": "20,20" }
+}
