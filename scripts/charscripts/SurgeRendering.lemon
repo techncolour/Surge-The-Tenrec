@@ -122,7 +122,9 @@ function bool SurgeCustomRendering(u8 character, u8 variant, s16 px, s16 py, boo
 		// }
 		
 		if (char.double_jump_state == 2)
+		{
 			kickrotate += ((char.flags & char.flag.FACING_LEFT) ? -45 : 45)
+		}
 
 		if (animationSpriteEx >= 0x100)
 		{
@@ -143,9 +145,6 @@ function bool SurgeCustomRendering(u8 character, u8 variant, s16 px, s16 py, boo
 
 		if (key == 0)
 		{
-			if (char.double_jump_state == 2)
-				key = stringformat("character_surge_0xba", animationSprite)
-			else
 				key = stringformat("character_surge_0x%02x", animationSprite)
 
 			if (!Renderer.hasCustomSprite(key))
@@ -262,7 +261,7 @@ function void UpdateSonicAnimation()
 
 		if (char.state == char.state.SURGE_SCREWKICK)
 		{
-			// function that handles screwkick animation
+			UpdateSurgeScrewKickAnimation()
 		}
 		else if (D0.u8 < 0x80)
 		{
@@ -286,5 +285,24 @@ function void UpdateSonicAnimation()
 
 function void UpdateSurgeScrewKickAnimation()
 {
+	if (char.animation.sprite != 0xbf && char.animation.sprite != 0xc0)
+		char.animation.sprite = 0xbf
+		
+	++char.animation.timer
 	
+	if (char.animation.timer > 1)
+	{
+		if (char.animation.sprite == 0xbf)
+		{
+			++char.animation.sprite
+		}
+		else
+		{
+			char.animation.sprite = 0xbf
+		}
+		
+		char.animation.timer = 0
+	}
+	
+	System.writeDisplayLine(stringformat("0x%02x", char.animation.sprite))
 }

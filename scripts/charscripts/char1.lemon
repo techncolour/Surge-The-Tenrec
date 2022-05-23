@@ -39,6 +39,8 @@ function void Character.BaseUpdate.Sonic()
 		// Gravity & Hitbox (Surge Ability)
 		if (char.double_jump_state == 2)
 		{
+			char.state = char.state.SURGE_SCREWKICK
+		
 			char.velocity.y += 0x3f
 
 			D2.u16 = char.position.x.u16 - 0x24
