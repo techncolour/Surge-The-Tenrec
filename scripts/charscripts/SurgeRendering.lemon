@@ -303,6 +303,4 @@ function void UpdateSurgeScrewKickAnimation()
 		
 		char.animation.timer = 0
 	}
-	
-	System.writeDisplayLine(stringformat("0x%02x", char.animation.sprite))
 }
