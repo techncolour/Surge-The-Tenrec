@@ -1,5 +1,5 @@
 {
-	"NPLine":  { "File": "HitEffect.png", "Rect": "10,5,5,3"},
-	"SpeedrunBonus":  { "File": "SpeedrunBonus.png", "Rect": "84,14,42,7"},
-	"NoHitBonus":  { "File": "NoHitBonus.png", "Rect": "69,14,34,7"}
+	"NPLine":  { "File": "HitEffect.png", "Rect": "0,0,10,5", "Center": "5,2" },
+	"SpeedrunBonus":  { "File": "SpeedrunBonus.png", "Rect": "0,0,84,14", "Center": "42,7" },
+	"NoHitBonus":  { "File": "NoHitBonus.png", "Rect": "0,0,69,14", "Center": "34,7" }
 }
