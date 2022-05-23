@@ -87,11 +87,17 @@ function bool Character.updateSuperPeelout()
 			return false
 		}
 
+		/*
+
+		Disable for now, breaks everything
+
 		if (ring_counter >= 25) && !(char.bonus_effect & char.bonus.SHIELD_LIGHTNING) // Buy Lightning Shield
 		{
 			ring_counter -= 25
 			fn06122a() // Apply Lightning Shield
 		}
+
+		*/
 
 		return true
 	}
