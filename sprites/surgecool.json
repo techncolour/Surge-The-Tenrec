@@ -1,4 +1,4 @@
 {
-	"character_surge_0xbf":  { "File": "surgecool.bmp", "Rect": "0,0,64,64", "Center": "20,20" },
-	"character_surge_0xc0":  { "File": "surgecool.bmp", "Rect": "65,0,64,64", "Center": "20,20" }
+	"character_surge_0xbf":  { "File": "surgecool.bmp", "Rect": "0,0,64,64", "Center": "32,32" },
+	"character_surge_0xc0":  { "File": "surgecool.bmp", "Rect": "65,0,64,64", "Center": "32,32" }
 }
