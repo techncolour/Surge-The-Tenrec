@@ -1,4 +1,5 @@
 constant u8 char.state.SURGE_SCREWKICK = 0x30
+global u16 kickrotate = 0
 
 
 function bool Standalone.drawCharacterSprite(u8 character, u8 variant, s16 px, s16 py, bool asSmallGhost)
@@ -120,8 +121,8 @@ function bool SurgeCustomRendering(u8 character, u8 variant, s16 px, s16 py, boo
 		// 	}
 		// }
 		
-		if (char.state == char.state.SURGE_SCREWKICK)
-			angle += ((char.flags & char.flag.FACING_LEFT) ? 90 : -90)
+		if (char.double_jump_state == 2)
+			kickrotate += ((char.flags & char.flag.FACING_LEFT) ? -45 : 45)
 
 		if (animationSpriteEx >= 0x100)
 		{
@@ -142,8 +143,10 @@ function bool SurgeCustomRendering(u8 character, u8 variant, s16 px, s16 py, boo
 
 		if (key == 0)
 		{
-
-			key = stringformat("character_surge_0x%02x", animationSprite)
+			if (char.double_jump_state == 2)
+				key = stringformat("character_surge_0xba", animationSprite)
+			else
+				key = stringformat("character_surge_0x%02x", animationSprite)
 
 			if (!Renderer.hasCustomSprite(key))
 			{
@@ -182,7 +185,10 @@ function bool SurgeCustomRendering(u8 character, u8 variant, s16 px, s16 py, boo
 	}
 	else
 	{
-		Renderer.drawCustomSprite(key, px, py, atex, flags, renderQueue, angle, 255)
+		if (char.double_jump_state == 2)
+			Renderer.drawCustomSprite(key, px, py, atex, flags, renderQueue, kickrotate, 255)
+		else
+			Renderer.drawCustomSprite(key, px, py, atex, flags, renderQueue, angle, 255)
 	}
 
 	bool useAfterImages
