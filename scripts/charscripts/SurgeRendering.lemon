@@ -1,3 +1,6 @@
+constant u8 char.state.SURGE_SCREWKICK = 0x30
+
+
 function bool Standalone.drawCharacterSprite(u8 character, u8 variant, s16 px, s16 py, bool asSmallGhost)
 {
 	//Surge's animations will override the normal render
@@ -116,6 +119,9 @@ function bool SurgeCustomRendering(u8 character, u8 variant, s16 px, s16 py, boo
 		// 		animationSprite = 0xeb
 		// 	}
 		// }
+		
+		if (char.state == char.state.SURGE_SCREWKICK)
+			angle += ((char.flags & char.flag.FACING_LEFT) ? 90 : -90)
 
 		if (animationSpriteEx >= 0x100)
 		{
@@ -223,3 +229,56 @@ function bool SurgeCustomRendering(u8 character, u8 variant, s16 px, s16 py, boo
 }
 
 
+// code below is related to custom animations, not complete yet, so don't mess with it please! -haz
+
+//# address-hook(0x012600) end(0x01286c)
+//# translated(0x012a2a) end(0x012a6e)
+function void UpdateSonicAnimation()
+{
+	if (XtraChar == 1)
+	{
+		if (char.state != char.state.former)
+		{
+			char.state.former = char.state
+			char.animation.frame = 0
+			char.animation.timer = 0
+			char.flags &= ~char.flag.PUSHING
+		}
+
+		A1 = (super.active) ? 0x012c3a : 0x012aa6
+		A1 = tableLookupAddress(A1, char.state * 2)
+		D0.u8 = u8[A1]
+
+		// D0.u8 is either:
+		//  - 0xff when running
+		//  - 0xfe when rolling (on ground or in air)
+		//  - between 0x00 and 0x7f in other cases (like standing, balancing, spring-jumping, getting hurt, etc.)
+
+		if (char.state == char.state.SURGE_SCREWKICK)
+		{
+			// function that handles screwkick animation
+		}
+		else if (D0.u8 < 0x80)
+		{
+			updateSonicAnimationStanding()
+		}
+		else if (D0.u8 == 0xff)
+		{
+			updateSonicAnimationRunning()
+		}
+		else
+		{
+			updateSonicAnimationRolling()
+		}
+	}
+	else
+	{
+		// not surge, use base function instead
+		base.UpdateSonicAnimation()
+	}
+}
+
+function void UpdateSurgeScrewKickAnimation()
+{
+	
+}
