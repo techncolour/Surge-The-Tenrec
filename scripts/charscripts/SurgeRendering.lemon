@@ -1,4 +1,3 @@
-constant u8 char.state.SURGE_SCREWKICK = 0x30
 global u16 kickrotate = 0
 
 
@@ -259,7 +258,7 @@ function void UpdateSonicAnimation()
 		//  - 0xfe when rolling (on ground or in air)
 		//  - between 0x00 and 0x7f in other cases (like standing, balancing, spring-jumping, getting hurt, etc.)
 
-		if (char.state == char.state.SURGE_SCREWKICK)
+		if (char.double_jump_state == 2)
 		{
 			UpdateSurgeScrewKickAnimation()
 		}
