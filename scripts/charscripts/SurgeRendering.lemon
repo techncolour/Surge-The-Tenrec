@@ -241,6 +241,13 @@ function void UpdateSonicAnimation()
 {
 	if (XtraChar == 1)
 	{
+	
+		if (char.state == 0x31) // spring twirl support
+		{
+			base.UpdateSonicAnimation()
+			return
+		}
+	
 		if (char.state != char.state.former)
 		{
 			char.state.former = char.state
