@@ -409,7 +409,7 @@ function void SurgeComboCheck()
 	// }
 	if (char.double_jump_state == 2) // Combo Counter
 	{
-		AngleOfLine = getRandomNumber() % 360
+		AngleOfLine = getRandomNumber() % 255
 		SurgeCombo++
 		Surge.SpawnLinesEffect() // Newtrogic Panic moment
 
