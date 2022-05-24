@@ -40,11 +40,19 @@
 function bool Standalone.onWriteToSpriteTable(s16 px, s16 py, u16 renderQueue)
 {	
 	s16 rotation
-	if (objA0.update_address == 0x2004C2 || objA0.update_address == 0x2004C4)															// It's our object.
+	if (objA0.update_address == 0x2004C2 || objA0.update_address == 0x2004C4) // Hit effect
 	{
 		u64 key = stringformat("NPLine", objA0.animation.sprite)								// Set the sprite using the random value from the setup function.
 		
 		Renderer.drawCustomSpriteWithTransform(key, px, py, 0x00, SPRITE_FLAG_PRIO, 0x9fff, 0, 0xff, 50, 50, 50)			// High priority and renderQueue, to appear above most other things. Put in value26 as the angle, and just give it full opacity.
+		return true																					// Make sure to return after!
+	}
+
+	if (objA0.update_address == 0x01980e || objA0.update_address == 0x019732 || objA0.update_address == 0x019874) // Electricity effect
+	{
+		u64 key = stringformat("NPLine", objA0.animation.sprite)
+
+		Renderer.drawCustomSprite(key, px, py, 0x0, objA0.render_flags, renderQueue)
 		return true																					// Make sure to return after!
 	}
 	return base.Standalone.onWriteToSpriteTable(px, py, renderQueue)								// And then return the base.
