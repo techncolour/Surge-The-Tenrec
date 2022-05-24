@@ -71,6 +71,9 @@ function void Character.BaseUpdate.Sonic()
 
 		if (SurgeAfterImageTimer != 0)
 			SurgeAfterImageTimer--
+
+		if (SurgeChargedSpindash >= 16)
+			SurgeChargedSpindash = 16
 	}
 
 	base.Character.BaseUpdate.Sonic()
@@ -90,6 +93,7 @@ function void SonicPressedJumpInMidAir()
 	playSound(0xa0)
 	playSound(SFX_INSTASHIELD)
 	playSound(SFX_LIGHTNINGJUMP)
+	playSound(SFX_SPINDASH_RELEASE)
 	playSound(0x40)
 	playSound(0x79)
 
