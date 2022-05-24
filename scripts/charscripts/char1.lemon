@@ -40,7 +40,7 @@ function void Character.BaseUpdate.Sonic()
 		Game.setDiscordSmallImage("character_unknown")
 
 		// Gravity & Hitbox (Surge Ability)
-		if (char.double_jump_state == 2) && (char.state == char.state.ROLLING)
+		if (char.double_jump_state == 2)
 		{		
 			// Insta-shield makes Sonic briefly invincible and increases his hitbox
 			u8 oldBonusEffect = char.bonus_effect
@@ -377,7 +377,7 @@ function void Character.OnCollisionWithDynamicObject()
 				}
 			}
 		}
-		else if (D1.u8 == 0x80)
+		else if (D1.u8 == 0x80) && (char.double_jump_state != 2)
 		{
 			// Harmful object
 			Character.OnThreatCollision()
@@ -417,20 +417,6 @@ function void SurgeComboCheck()
 			SurgeAfterImageTimer = 15
 		}
 	}
-}
-
-//# address-hook(0x010294) end(0x010364)
-function void Character.GettingHurt()
-{
-	if (XtraChar != 1)
-	{
-		base.Character.GettingHurt()
-		return
-	}
-	if (char.double_jump_state != 2) // Set invincibility
-		base.Character.GettingHurt()
-	else	
-		fn0103ba()
 }
 
 function u64 Slot1MonitorKeys(u8 type)
