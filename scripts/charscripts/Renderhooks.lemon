@@ -1,5 +1,8 @@
 function bool Standalone.onWriteToSpriteTable(s16 px, s16 py, u16 renderQueue)
 {
+	// u8[0xffffcd08] = 1
+	System.writeDisplayLine(stringformat("u8[0xffffcd08] = %x", u8[0xffffcd08]))
+	// System.writeDisplayLine(stringformat("char.velocity.x = %x", char.velocity.x))
 	u8 gameMode = global.game_mode & 0x7f
 	bool prioFlag = (objA0.sprite_attributes & 0x8000) != 0
 	u64 key
