@@ -323,19 +323,19 @@ function void Character.OnCollisionWithDynamicObject()
 				}
 
 				bool canOpenMonitor = false
-				if (char.state == char.state.ROLLING)
+				if (char.state == char.state.ROLLING) && (char.double_jump_state != 2)
 				{
 					canOpenMonitor = true
 				}
 			#if STANDALONE
-				else if (Game.getSetting(SETTING_DROPDASH) && char.character == CHARACTER_SONIC && char.state == char.state.SONIC_DROPDASH)
+				else if (Game.getSetting(SETTING_DROPDASH) && char.character == CHARACTER_SONIC && char.state == char.state.SONIC_DROPDASH) && (char.double_jump_state != 2)
 				{
 					canOpenMonitor = true
 				}
 			#endif
 				else if (char.character == CHARACTER_KNUCKLES)
 				{
-					canOpenMonitor = (char.double_jump_state == 1 || char.double_jump_state == 3)
+					canOpenMonitor = (char.double_jump_state == 1 || char.double_jump_state == 3) && (char.double_jump_state != 2)
 				}
 
 				if (canOpenMonitor)
