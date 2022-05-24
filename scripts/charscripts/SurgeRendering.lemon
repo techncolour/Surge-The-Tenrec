@@ -124,6 +124,10 @@ function bool SurgeCustomRendering(u8 character, u8 variant, s16 px, s16 py, boo
 		{
 			kickrotate += ((char.flags & char.flag.FACING_LEFT) ? -45 : 45)
 		}
+		else
+		{
+			kickrotate = 0
+		}
 
 		if (animationSpriteEx >= 0x100)
 		{
