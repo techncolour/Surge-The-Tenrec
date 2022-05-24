@@ -1,5 +1,6 @@
 {
 	"NPLine":  { "File": "HitEffect.png", "Rect": "0,0,10,5", "Center": "5,2" },
+	"Ballz":  { "File": "ballz3d.png", "Rect": "0,0,64,44", "Center": "0,0" },
 	"SpeedrunBonus":  { "File": "SpeedrunBonus.png", "Rect": "0,0,84,14", "Center": "42,7" },
 	"NoHitBonus":  { "File": "NoHitBonus.png", "Rect": "0,0,69,14", "Center": "34,7" }
 }

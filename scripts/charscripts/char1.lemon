@@ -16,6 +16,10 @@ global u8 SurgeChargedSpindash = 0
 
 global u8 SurgeAfterImageTimer = 0
 
+global u16 AngleOfLine
+
+global bool LineEffect
+
 //# address-hook(0x010a94) end(0x010ae8)
 function void Character.BaseUpdate.Sonic()
 {
@@ -41,7 +45,7 @@ function void Character.BaseUpdate.Sonic()
 
 		// Gravity & Hitbox (Surge Ability)
 		if (char.double_jump_state == 2)
-		{		
+		{
 			// Insta-shield makes Sonic briefly invincible and increases his hitbox
 			u8 oldBonusEffect = char.bonus_effect
 			char.bonus_effect |= char.bonus.INVINCIBLE
@@ -399,8 +403,13 @@ function void Character.OnCollisionWithDynamicObject()
 
 function void SurgeComboCheck()
 {
+	// if (!LineEffect)
+	// {
+		// LineEffect = true
+	// }
 	if (char.double_jump_state == 2) // Combo Counter
 	{
+		AngleOfLine = getRandomNumber() % 360
 		SurgeCombo++
 		Surge.SpawnLinesEffect() // Newtrogic Panic moment
 
