@@ -784,7 +784,7 @@ function void releaseSpindash()
 		D0.u16 = 0x2000 - (D0.u16 & 0x1f00)
 
 		// Camera delay
-		if (A0 == 0xffffb000)
+		if (A0 == 0xffffb000) && !(SurgeChargedSpindash >= 8)
 		{
 		#if STANDALONE
 			// This does not hurt
