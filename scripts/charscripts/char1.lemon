@@ -40,7 +40,7 @@ function void Character.BaseUpdate.Sonic()
 		Game.setDiscordSmallImage("character_unknown")
 
 		// Gravity & Hitbox (Surge Ability)
-		if (char.double_jump_state == 2)
+		if (char.double_jump_state == 2) && (char.state == char.state.ROLLING)
 		{		
 			char.velocity.y += 0x3f
 
