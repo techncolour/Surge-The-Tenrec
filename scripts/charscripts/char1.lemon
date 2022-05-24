@@ -58,19 +58,45 @@ function void Character.BaseUpdate.Sonic()
 
 function void SonicPressedJumpInMidAir()
 {
-	if (XtraChar == 1) // Surge Ability
-	{
-		char.double_jump_state = 2
-		char.velocity.x += (char.flags & char.flag.FACING_LEFT) ? -0x250 : 0x250
-		char.velocity.y = -0x800
-		char.jumping = 0
-		playSound(0xa0)
-		playSound(SFX_INSTASHIELD)
-	}
-	else
+	if (XtraChar != 1) // Surge Ability
 	{
 		base.SonicPressedJumpInMidAir()
+		return 
 	}
+	char.double_jump_state = 2
+	char.velocity.x += (char.flags & char.flag.FACING_LEFT) ? -0x250 : 0x250
+	char.velocity.y = -0x800
+	char.jumping = 0
+	playSound(0xa0)
+	playSound(SFX_INSTASHIELD)
+}
+
+
+//# address-hook(0x024090) end(0x0240dc)
+function void Spikes.Update()
+{
+	fn0242b6()
+
+	D1 = objA0.box_size.x + 11
+	D2 = objA0.box_size.y
+	D3.u16 = D2.u16 + 1
+	D4.u16 = objA0.position.x.u16
+	fn01dc56()
+
+	if (objA0.flags2a & 0x08)
+	{
+		A1 = 0xffffb000
+		DamageCharacter()
+	}
+
+	if (objA0.flags2a & 0x10)
+	{
+		A1 = 0xffffb04a
+		DamageCharacter()
+	}
+
+	D0.u16 = u16[A0 + 0x30]
+	DrawOrUnloadObjectByD0()
 }
 
 function bool Character.updateSuperPeelout()
@@ -361,17 +387,107 @@ function void SurgeComboCheck()
 //# address-hook(0x010294) end(0x010364)
 function void Character.GettingHurt()
 {
-	if (XtraChar == 1)
+	if (XtraChar != 1)
 	{
-		if (char.double_jump_state != 2) // Set invincibility
-			base.Character.GettingHurt()
-		else	
-			fn0103ba()
+		base.Character.GettingHurt()
+		return
+	}
+	bool canLoseShield = true	// Usually true, gets false e.g. for 2nd player Tails
+	bool isProtectedByObject = ((char.protection_flag & 0x80) != 0)
+	bool spilledRings = false
+
+	u16 rings = ring_counter
+	if (A0 != 0xffffb000)
+	{
+		// It's the second player
+		if (competition_mode.active)
+		{
+			rings = u16[0xfffffed0]
+		}
+		else
+		{
+			canLoseShield = false
+		}
+	}
+
+	if (char.double_jump_state != 2 || canLoseShield && (char.bonus_effect & char.bonus.ANY_SHIELD) == 0)
+	{
+		if (!isProtectedByObject)
+		{
+			// No more rings?
+			if (rings == 0)
+			{
+				D0 = getSoundIdByObstacleAddress(u32[A2])
+				Character.Die_internal()
+				return
+			}
+
+			// Create ring spill object
+			if (allocDynamicObjectStd())
+			{
+				objA1.update_address = 0x01a64a
+				objA1.position.x.u16 = char.position.x.u16
+				objA1.position.y.u16 = char.position.y.u16
+				u16[A1 + 0x3e] = A0.u16
+			}
+			spilledRings = true
+
+			// Should be unnecessary, but make sure all shield flags are cleared
+			char.bonus_effect &= 0x8e
+		}
 	}
 	else
 	{
-		base.Character.GettingHurt()
+	#if STANDALONE
+		// When using e.g. the MGZ spinning top, do not lose your shield
+		if (!isProtectedByObject)
+	#endif
+		{
+			// Lose shield
+			char.bonus_effect &= 0x8e
+		}
 	}
+
+	char.base_state = 0x04
+	Character.LandingOnGroundNoSpindash()
+	char.flags |= char.flag.IN_AIR
+	if (char.flags & char.flag.UNDERWATER)
+	{
+		char.velocity.x = -0x100
+		char.velocity.y = -0x200
+	}
+	else
+	{
+		char.velocity.x = -0x200
+		char.velocity.y = -0x400
+	}
+	if (char.position.x.u16 >= u16[A2 + 0x10])
+	{
+		char.velocity.x = -char.velocity.x
+	}
+
+	char.groundspeed = 0
+	char.state = char.state.GOT_HURT
+	char.invuln.countdown = 120
+
+#if STANDALONE
+	if (char.character == CHARACTER_SONIC)
+	{
+		// Reset drop dash
+		sonic.dropdash_counter = 0
+	}
+
+	// In standalone, don't play the sound when rings got spilled
+	//  -> This check is not necessary in emulation, as the ring spill sound kills this one (only one of both can be played)
+	if (!spilledRings)
+#endif
+	{
+		playSound(getSoundIdByObstacleAddress(u32[A2]))
+	}
+	// if (char.double_jump_state != 2 || (canLoseShield && (char.bonus_effect & char.bonus.ANY_SHIELD) == 0)) // Set invincibility
+	// 	base.Character.GettingHurt()
+	// else	
+	// 	fn0103ba()
 }
 
 function u64 Slot1MonitorKeys(u8 type)
