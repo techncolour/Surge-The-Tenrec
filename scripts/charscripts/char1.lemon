@@ -727,8 +727,8 @@ function bool Character.UpdateSpindash()
 						playSound(0xa4)
 						playSound(0xc5)
 						playSound(0xd9)
-						camera.screenshake.state = 0x14
-						camera.hyper_knux_shake = 0x14
+						camera.screenshake.state = 0xb
+						camera.hyper_knux_shake = 0xb
 						LightningShield.CreateSparks()
 					}
 				}
