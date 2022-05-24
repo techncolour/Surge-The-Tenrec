@@ -41,11 +41,22 @@ function void Character.BaseUpdate.Sonic()
 		{		
 			char.velocity.y += 0x3f
 
-			D2.u16 = char.position.x.u16 - 0x24
-			D3.u16 = char.position.y.u16 - 0x24
-			D4.u16 = 0x42
-			D5.u16 = 0x42
-			Character.CheckCollisionsWithDynamicObjects_partial()
+		// Insta-shield makes Sonic briefly invincible and increases his hitbox
+		u8 oldBonusEffect = char.bonus_effect
+		char.bonus_effect |= char.bonus.INVINCIBLE
+	#if STANDALONE
+		// Also make insta-shield bounce off projectiles
+		char.bonus_effect |= char.bonus.ANY_SHIELD
+	#endif
+
+		// Larger hitbox
+		D2.u16 = char.position.x.u16 - 0x18
+		D3.u16 = char.position.y.u16 - 0x18
+		D4.u16 = 0x30
+		D5.u16 = 0x30
+		Character.CheckCollisionsWithDynamicObjects_partial()
+
+		char.bonus_effect = oldBonusEffect
 		}
 		else
 		{
