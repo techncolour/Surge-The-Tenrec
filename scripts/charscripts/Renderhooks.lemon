@@ -54,7 +54,7 @@ function string getCharacterPaletteKey(u8 character)
 {
 	if (XtraChar == 1 && character == CHARACTER_SONIC)
 	{
-		return (surge.palette == 0) ? "surge_00" : (surge.palette == 1) ? "surge_01" : "surge_02"
+		return stringformat("surge_%02x", surge.palette)
 	}
     return base.getCharacterPaletteKey(character)
 }
