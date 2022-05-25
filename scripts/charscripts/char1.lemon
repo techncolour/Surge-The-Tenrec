@@ -722,8 +722,17 @@ function bool Character.UpdateSpindash()
 						playSound(0xa4)
 						playSound(0xc5)
 						playSound(0xd9)
-						camera.screenshake.state = 0xb
-						camera.hyper_knux_shake = 0xb
+
+						if (SurgeChargedSpindash >= 16)
+						{
+							camera.screenshake.state = 0x14
+							camera.hyper_knux_shake = 0x14
+						}
+						else
+						{
+							camera.screenshake.state = 0xb
+							camera.hyper_knux_shake = 0xb
+						}
 						LightningShield.CreateSparks()
 					}
 				}
@@ -753,13 +762,6 @@ function void releaseSpindash()
 {
 	if (XtraChar == 1)
 	{
-		// Release spindash!
-		char.hitbox_extends.x = 7
-		char.hitbox_extends.y = 14
-		char.state = char.state.ROLLING
-		char.flags |= char.flag.ROLLING
-		char.spindash = 0
-
 		u32 baseAddress
 		s8 dy = 5
 		if (char.character != CHARACTER_TAILS)
@@ -801,8 +803,18 @@ function void releaseSpindash()
 			char.groundspeed = -char.groundspeed
 		}
 
+		if (SurgeChargedSpindash >= 8)
+			char.groundspeed += (char.flags & char.flag.FACING_LEFT) ? 0x450 : -0x450
+
 		// Tell dust cloud object to disappear again
 		u8[A6 + 0x20] = 0
+
+		// Release spindash!
+		char.hitbox_extends.x = 7
+		char.hitbox_extends.y = 14
+		char.spindash = 0
+		char.state = char.state.ROLLING
+		char.flags |= char.flag.ROLLING
 
 		playSound(SFX_SPINDASH_RELEASE)
 
@@ -821,4 +833,105 @@ function void releaseSpindash()
 	{
 		base.releaseSpindash()
 	}
+}
+
+function void SonicUpdateRingCollection()
+{
+	if (XtraChar == 1)
+	{
+		// Shortly after getting hit, you can't collect rings
+		if (char.invuln.countdown >= 90)
+			return
+
+		u16 box.pos.x
+		u16 box.pos.y
+		u16 box.size.x
+		u16 box.size.y
+
+		if (char.bonus_effect & char.bonus.SHIELD_LIGHTNING) || (SurgeChargedSpindash >= 16)
+		{
+			box.pos.x = char.position.x.u16 - 0x40
+			box.pos.y = char.position.y.u16 - 0x40
+			box.size.x = 0x80
+			box.size.y = 0x80
+		}
+		else
+		{
+			box.size.y = char.hitbox_extends.y - 0x03
+			box.pos.x = char.position.x.u16 - 0x08
+			box.pos.y = char.position.y.u16 - box.size.y
+			box.size.x = 0x10
+			box.size.y *= 2
+		}
+
+		// Cycle through list of all rings with x-position in screen area
+		A1 = rings.around.first
+		A2 = rings.around.last
+		A4 = 0xffff0000 + rings.around.first.state
+
+		while (A1 != A2)
+		{
+			// Check if already collected
+			if (u16[A4] == 0)
+			{
+				u16 ring.x = u16[A1 + 0]
+				u16 ring.y = u16[A1 + 2]
+
+				s16 ring.offset = 6
+				s16 ring.size = 12
+
+				u16 px = ring.x - ring.offset
+				u16 py = ring.y - ring.offset
+
+			#if STANDALONE
+				// Consider vertical level wrap
+				if (level.vertical_wrap == 0xff00)
+				{
+					s16 dy = py - box.pos.y
+					if (dy < -s16(level.height.bitmask)/2)
+					{
+						py += (level.height.bitmask + 1)
+					}
+					else if (dy > level.height.bitmask/2)
+					{
+						py -= (level.height.bitmask + 1)
+					}
+				}
+			#endif
+
+				if (checkBoxOverlap(box.pos.x, box.pos.y, box.size.x, box.size.y, px, py, ring.size, ring.size))
+				{
+					if (char.bonus_effect & char.bonus.SHIELD_LIGHTNING) || (SurgeChargedSpindash >= 16)
+					{
+						if (makeDynamicRing())
+							return
+					}
+
+					// Start ring animation, ring counts as collected now
+					u16[A4] = 0x0604
+
+					// Collect this ring
+					CollectLevelRing()
+
+					// This seems to be some kind of table of the currently animated rings
+					A3 = 0xffffef82
+					while (u16[A3] != 0)
+					{
+						A3 += 2
+					}
+					u16[A3] = A4.u16
+
+					++u16[0xffffef80]
+				}
+			}
+
+			A1 += 4
+			A4 += 2
+		}
+	}
+	else
+	{
+		SonicUpdateRingCollection()
+	}
+		
 }
