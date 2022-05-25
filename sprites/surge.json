@@ -248,5 +248,13 @@
 	"character_surge_0xf7":  { "File": "surge.bmp", "Rect": "352,848,24,40", "Center": "12,20" },
 	"character_surge_0xf8":  { "File": "surge.bmp", "Rect": "408,848,24,40", "Center": "12,20" },
 	"character_surge_0xf9":  { "File": "surge.bmp", "Rect": "464,848,24,40", "Center": "12,20" },
-	"character_surge_0xfa":  { "File": "surge.bmp", "Rect": "516,848,32,40", "Center": "16,20" }
+	"character_surge_0xfa":  { "File": "surge.bmp", "Rect": "516,848,32,40", "Center": "16,20" },
+	"character_surge_0xfb":  { "File": "surge.bmp", "Rect": "549,853,45,34", "Center": "16,14" },
+	"character_surge_0xfc":  { "File": "surge.bmp", "Rect": "595,853,29,34", "Center": "10,14" },
+	"character_surge_0xfd":  { "File": "surge.bmp", "Rect": "625,853,42,34", "Center": "15,14" },
+	"character_surge_0xfe":  { "File": "surge.bmp", "Rect": "668,853,29,34", "Center": "10,14" },
+	"character_surge_0xff":  { "File": "surge.bmp", "Rect": "698,853,42,34", "Center": "13,14" },
+	"character_surge_0xg1":  { "File": "surge.bmp", "Rect": "742,853,29,34", "Center": "10,14" },
+	"character_surge_0xg2":  { "File": "surge.bmp", "Rect": "772,853,39,34", "Center": "17,14" },
+	"character_surge_0xg3":  { "File": "surge.bmp", "Rect": "812,853,29,34", "Center": "10,14" }
 }
