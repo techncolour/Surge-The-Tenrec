@@ -3,4 +3,3 @@
 include charscripts/?
 
 global u8 surge.palette
-constant u8 CHARACTER_SURGE = 4
