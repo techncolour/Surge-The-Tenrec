@@ -1,4 +1,5 @@
 {
 	"character_surge_0xbf":  { "File": "surgecool.bmp", "Rect": "0,0,64,64", "Center": "32,32" },
-	"character_surge_0xc0":  { "File": "surgecool.bmp", "Rect": "65,0,64,64", "Center": "32,32" }
+	"character_surge_0xc0":  { "File": "surgecool.bmp", "Rect": "65,0,64,64", "Center": "32,32" },
+	"quandale_surgle":  { "File": "quandale_surgle.png", "Rect": "0,0,200,200", "Center": "100,100" }
 }
