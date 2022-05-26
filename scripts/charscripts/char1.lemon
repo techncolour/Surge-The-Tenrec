@@ -5,7 +5,7 @@ function void Slot1Char()
 
 function u64 getCharacterBonusTextIcon(u8 character)
 {
-	return (XtraChar == 1) ? "" : base.getCharacterBonusTextIcon(character)
+	return (XtraChar == 1) ? "hud_bonus_icon_green" : base.getCharacterBonusTextIcon(character)
 }
 
 define u16 continueHUD.y = 185
