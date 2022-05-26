@@ -3,6 +3,10 @@
 include charscripts/?
 
 global u8 surge.palette
+global u8 surge.screenshake
+global u8 surge.kickspeed
+global u8 surge.hiteffects
+global u8 surge.lightningfx
 
 
 

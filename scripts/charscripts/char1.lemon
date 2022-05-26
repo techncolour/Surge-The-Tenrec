@@ -101,10 +101,14 @@ function void SonicPressedJumpInMidAir()
 	playSound(0x40)
 	playSound(0x79)
 
-	camera.screenshake.state = 0xb
-	camera.hyper_knux_shake = 0xb
+	if (surge.screenshake == 0x01)
+	{
+		camera.screenshake.state = 0xb
+		camera.hyper_knux_shake = 0xb
+	}
 
-	LightningShield.CreateSparks()
+	if (surge.lightningfx == 0x01)
+		LightningShield.CreateSparks()
 
 	SurgeAfterImageTimer = 10
 }
@@ -436,10 +440,15 @@ function void SurgeComboCheck()
 	{
 		AngleOfLine = getRandomNumber() & 255
 		SurgeCombo++
-		Surge.SpawnLinesEffect() // Newtrogic Panic moment
 
-		camera.screenshake.state = 0x14
-		camera.hyper_knux_shake = 0x14
+		if (surge.hiteffects == 0x01)
+			Surge.SpawnLinesEffect() // Newtrogic Panic moment
+
+		if (surge.screenshake == 0x01)
+		{
+			camera.screenshake.state = 0x14
+			camera.hyper_knux_shake = 0x14
+		}
 
 		playSound(0x85)
 
@@ -748,17 +757,22 @@ function bool Character.UpdateSpindash()
 						playSound(0xc5)
 						playSound(0xd9)
 
-						if (SurgeChargedSpindash >= 16)
+						if (surge.screenshake == 0x01)
 						{
-							camera.screenshake.state = 0x14
-							camera.hyper_knux_shake = 0x14
+							if (SurgeChargedSpindash >= 16)
+							{
+								camera.screenshake.state = 0x14
+								camera.hyper_knux_shake = 0x14
+							}
+							else
+							{
+								camera.screenshake.state = 0xb
+								camera.hyper_knux_shake = 0xb
+							}
 						}
-						else
-						{
-							camera.screenshake.state = 0xb
-							camera.hyper_knux_shake = 0xb
-						}
-						LightningShield.CreateSparks()
+
+						if (surge.lightningfx == 0x01)
+							LightningShield.CreateSparks()
 					}
 				}
 			}
@@ -847,9 +861,14 @@ function void releaseSpindash()
 		{
 			playSound(0x40)
 			playSound(0x79)
-			camera.screenshake.state = 0x14
-			camera.hyper_knux_shake = 0x14
-			LightningShield.CreateSparks()
+			if (surge.screenshake == 0x01)
+			{
+				camera.screenshake.state = 0x14
+				camera.hyper_knux_shake = 0x14
+			}
+
+			if (surge.lightningfx == 0x01)
+				LightningShield.CreateSparks()
 
 			SurgeAfterImageTimer = 30
 		}

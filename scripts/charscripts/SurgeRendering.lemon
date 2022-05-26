@@ -122,7 +122,10 @@ function bool SurgeCustomRendering(u8 character, u8 variant, s16 px, s16 py, boo
 		
 		if (char.double_jump_state == 2)
 		{
-			kickrotate += ((char.flags & char.flag.FACING_LEFT) ? -45 : 45)
+			if (surge.kickspeed == 0x01)
+				kickrotate += ((char.flags & char.flag.FACING_LEFT) ? -45 : 45)
+			else
+				kickrotate += ((char.flags & char.flag.FACING_LEFT) ? -20 : 20)
 		}
 		else
 		{

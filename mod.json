@@ -10,13 +10,13 @@
 	
 	"Settings":
 	{
-			"Group1":
+			"Visual":
 		[
 			{
 				"InternalName": "surge.palette",
 				"DisplayName": "Palette",
 				"Variable": "surge.palette",
-				"Category": "Palette options",
+				"Category": "Visual",
 				"DefaultValue": "0",
 				"Options":
 				{
@@ -31,7 +31,61 @@
 						"0x08": "Jack's Normal S1 palette"
 				}
 			}
-		]
+		],
+		"Accessibility":
+		[
+			{
+				"InternalName": "surge.screenshake",
+				"DisplayName": "Screen Shake",
+				"Variable": "surge.screenshake",
+				"Category": "Accessibility",
+				"DefaultValue": "0x01",
+				"Options":
+				{
+						"0x00": "Disabled",
+						"0x01": "Enabled"
+				}
+			},
+
+			{
+				"InternalName": "surge.kickspeed",
+				"DisplayName": "Kick Animation Speed",
+				"Variable": "surge.kickspeed",
+				"Category": "Accessibility",
+				"DefaultValue": "0x01",
+				"Options":
+				{
+						"0x00": "Slow",
+						"0x01": "Fast"
+				}
+			},
+
+			{
+				"InternalName": "surge.hiteffects",
+				"DisplayName": "Hit Effects",
+				"Variable": "surge.hiteffects",
+				"Category": "Accessibility",
+				"DefaultValue": "0x01",
+				"Options":
+				{
+						"0x00": "Disabled",
+						"0x01": "Enabled"
+				}
+			},
+
+			{
+				"InternalName": "surge.lightningfx",
+				"DisplayName": "Electricity Effects Intensity",
+				"Variable": "surge.lightningfx",
+				"Category": "Accessibility",
+				"DefaultValue": "0x01",
+				"Options":
+				{
+						"0x00": "Mild",
+						"0x01": "Normal"
+				}
+			},
+		],
 	}
 
 }
