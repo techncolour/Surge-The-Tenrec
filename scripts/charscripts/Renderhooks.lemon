@@ -1,3 +1,19 @@
+global u8 Char_num = 3
+
+function void LoadChar3palette()
+{
+	u32 offset = Char_num * 0x40
+	u32 source = 0x802180 + offset
+	u32 dest   = 0x802000 + offset
+	zeroMemory(dest, 0x40)
+	u16 numColors = System.loadExternalPaletteData(getCharacterPaletteKey(Char_num), 0, 0x800000, 0x20)
+	for (u16 i = 0; i < numColors; ++i)
+	{
+		u32 rgba = u32[0x800000 + i * 4]
+		u16[dest + i * 2] = (rgba & 0xff000000) ? packColorExt(rgba) : 0
+	}
+}
+
 function bool Standalone.onWriteToSpriteTable(s16 px, s16 py, u16 renderQueue)
 {
 	u8 gameMode = global.game_mode & 0x7f
@@ -10,10 +26,12 @@ function bool Standalone.onWriteToSpriteTable(s16 px, s16 py, u16 renderQueue)
 	{
 		if (objA0.animation.sprite == 5 && objA0.animation.timer == 1)
 		{
+			atex = 0x40 + Char_num * 0x20
 			key = "dataSel_slot1"
+			LoadChar3palette()
 
 			if (Renderer.hasCustomSprite(key))
-				Renderer.drawCustomSprite(key, px - 0x0f, py-0x25, 0x00, SPRITE_FLAG_PRIO, 0xffff)
+				Renderer.drawCustomSprite(key, px - 0x0f, py-0x25, atex, SPRITE_FLAG_PRIO, 0xffff)
 		}
 	}
 	if (XtraChar == 1)
@@ -52,7 +70,7 @@ function bool Standalone.onWriteToSpriteTable(s16 px, s16 py, u16 renderQueue)
 //SET THE PALETTE -- REGULAR GAME HAS ITS OWN ENTRY
 function string getCharacterPaletteKey(u8 character)
 {
-	if (XtraChar == 1 && character == CHARACTER_SONIC)
+	if ((XtraChar == 1 && character == CHARACTER_SONIC) || character == 3)
 	{
 		return stringformat("surge_%02x", surge.palette)
 	}
