@@ -979,3 +979,12 @@ function void SonicUpdateRingCollection()
 	}
 		
 }
+
+// Fixed Surge's palette overwriting Sonic's in the data select menu
+//# address-hook(0x00c154) end(0x00c260)
+function void InitSaveSlots()
+{
+	// Call the base function
+    base.InitSaveSlots()
+	XtraChar = 0
+}
