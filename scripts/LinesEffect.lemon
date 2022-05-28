@@ -1,0 +1,207 @@
+// function void Surge.SpawnLinesEffect()
+// {
+// 	s16 life
+// 	s16 rotation
+
+// 	life = 0
+// 	rotation = System.rand() % 361
+
+// 	Surge.SpawnLinesEffect2(life, rotation)
+// }
+
+// function void Surge.SpawnLinesEffect2(s16 life, s16 rotation)
+// {
+// 	if (allocDynamicObjectStd())										// Get a memory address (or don't do anything if there is none available)
+// 	{
+// 		objA1.update_address = 0x200069									// Set an update address.
+// 		objA1.render_flags = (render_flag.WORLD | render_flag.VISIBLE)	// Make sure the object renders correctly.
+
+// 		objA1.box_size.x = 0x40											// Set its draw distance (how far off-screen can it go).
+// 		objA1.box_size.y = 0x40
+		
+// 		objA1.position.x.u16 = objA0.position.x.u16						// Same position as the object we spawn from (the monitor).
+// 		objA1.position.y.u16 = objA0.position.y.u16
+
+// 		LineEffect.Update()
+// 	}
+// }
+
+// //# address-hook(0x200069)
+// function void LineEffect.Update(s16 life, s16 rotation)
+// {	
+// 	DrawObject()									// Draw the object (rendering done in the renderhook).
+	
+// 	if !(objA0.render_flags & render_flag.VISIBLE)	// Off-screen?
+// 	{
+// 		UnloadObject()								// Then unload. Make sure to do this at the end of the object's update function!
+// 	}
+// }
+
+define u8 spinspeed = 10
+global u8 scree = 0
+
+function bool Standalone.onWriteToSpriteTable(s16 px, s16 py, u16 renderQueue)
+{	
+	s16 rotation
+	if (objA0.update_address == 0x2004C2 || objA0.update_address == 0x2004C4) // Hit effect
+	{
+		u64 key = stringformat("Ballz", objA0.animation.sprite)		
+		// u64 key = stringformat("NPLine", objA0.animation.sprite)								// Set the sprite using the random value from the setup function.
+
+		Renderer.drawCustomSprite(key, px, py, 0x00, SPRITE_FLAG_PRIO, 0x9fff, AngleOfLine, 255)
+		
+		//Renderer.drawCustomSpriteWithTransform(key, px, py, 0x00, SPRITE_FLAG_PRIO, 0x9fff, 0, 0xff, 50, 50, 50)			// High priority and renderQueue, to appear above most other things. Put in value26 as the angle, and just give it full opacity.
+		return true																					// Make sure to return after!
+	}
+
+	if (objA0.update_address == 0x01980e || objA0.update_address == 0x019874) // Electricity effect
+	{
+		u64 key = stringformat("NPLine", objA0.animation.sprite)
+
+		Renderer.drawCustomSprite(key, px, py, 0x0, objA0.render_flags, renderQueue)
+		return true																					// Make sure to return after!
+	}
+	return base.Standalone.onWriteToSpriteTable(px, py, renderQueue)								// And then return the base.
+}
+
+global s16 dust_speed
+global bool flip_dust
+
+function void Surge.SpawnLinesEffect()
+{
+	u32 A1backup = A1
+	
+	u8 count = 1
+	
+	dust_speed = 0x100
+
+	flip_dust = (char.flags & char.flag.FACING_LEFT) ? true : false
+	
+	while (count > 0)
+	{
+		--count
+		
+		if (allocDynamicObjectStd())
+		{
+			if (global.inv_gravity)
+			{
+				u8[A1 + 0x04] = (render_flag.WORLD)
+				objA1.update_address = 0x2004C4
+				//u16[A1 + 0x0a] = 0xa6bc
+				//u32[A1 + 0x0c] = 0x01a99a
+				objA1.position.y = objA0.position.y
+				objA1.position.x = objA0.position.x
+				objA1.state = 0
+				objA1.sprite_attributes = objA0.sprite_attributes
+				
+				objA1.position.y.u16 -= 0xf
+
+				// if (char.flags & char.flag.FACING_LEFT)
+				// 	objA1.position.x.u16 += 8
+				// else
+				// 	objA1.position.x.u16 -= 8
+				
+				objA1.velocity.x = dust_speed
+				
+				if (char.rotation)
+				{
+					objA1.flags2a = 1
+				}
+			}
+			else
+			{
+				u8[A1 + 0x04] = (render_flag.WORLD)
+				objA1.update_address = 0x2004C2
+				//u16[A1 + 0x0a] = 0xa6bc
+				//u32[A1 + 0x0c] = 0x01a99a
+				objA1.position.y = objA0.position.y
+				objA1.position.x = objA0.position.x
+				objA1.state = 0
+				objA1.sprite_attributes = objA0.sprite_attributes
+				
+				objA1.position.y.u16 += 0xf
+
+				// if (char.flags & char.flag.FACING_LEFT)
+				// 	objA1.position.x.u16 += 8
+				// else
+				// 	objA1.position.x.u16 -= 8
+				
+				objA1.velocity.x = dust_speed
+				
+				if (char.rotation)
+				{
+					objA1.flags2a = 1
+				}
+			}
+		}
+		if (dust_speed < 0)
+		{
+			dust_speed = -dust_speed
+			dust_speed += 0x80
+		}
+		else
+		{
+			dust_speed = -dust_speed
+		}
+		
+		if (!allocDynamicObjectStd())
+			return
+	}
+	
+	dust_speed = 0x80
+	
+	A1 = A1backup
+}
+
+//# address-hook(0x2004C2)
+function void Character.UpdateSpawnLinesEffect()
+{
+	if (objA0.state > 79)
+	{
+		UnloadObject()
+		return
+	}
+	objA0.position.x += objA0.velocity.x
+	//UpdateMovementStraightSimple()
+	
+	if (objA0.flags2a)
+	{
+		if !(u16[0xffffb000 + 0x46] & 2)
+		{
+			D5 = 0x0c
+			checkStaticCollisionVertical(objA0.position.x.u16, objA0.position.y.u16, 0xfffff768, 0x10, 0)
+		}
+		else
+		{
+			D5 = 0x0f
+			checkStaticCollisionVertical(objA0.position.x.u16, objA0.position.y.u16, 0xfffff768, 0x10, 1)
+		}
+		D1.u16 -= 2
+		if abs(D1.u16) < 0x1b
+		{
+			objA0.position.y.u16 += D1.u16
+		}
+	}
+	
+	objA0.value26 = objA0.state / 16
+	objA0.state += abs(objA0.velocity.x) / 70
+	
+	DrawObject()
+}
+
+//# address-hook(0x2004C4)
+function void Character.UpdateSpawnLinesEffectInverted()
+{
+	if (objA0.state > 79)
+	{
+		UnloadObject()
+		return
+	}
+	objA0.position.x += objA0.velocity.x
+	// UpdateMovementStraightSimple()
+	
+	objA0.value26 = objA0.state / 16
+	objA0.state += abs(objA0.velocity.x) / 70
+	
+	DrawObject()
+}
