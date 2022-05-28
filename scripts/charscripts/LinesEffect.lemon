@@ -54,7 +54,7 @@ function bool Standalone.onWriteToSpriteTable(s16 px, s16 py, u16 renderQueue)
 		return true																					// Make sure to return after!
 	}
 
-	if (objA0.update_address == 0x01980e || objA0.update_address == 0x019732 || objA0.update_address == 0x019874) // Electricity effect
+	if (objA0.update_address == 0x01980e || objA0.update_address == 0x019874) // Electricity effect
 	{
 		u64 key = stringformat("NPLine", objA0.animation.sprite)
 
