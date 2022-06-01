@@ -1,6 +1,7 @@
 //This is an example of a multi-char mod
 //I put all the stuff into one folder for some reason
 include charscripts/?
+include charscripts/ObjectInteractions/?
 
 global u8 surge.palette
 global u8 surge.screenshake
